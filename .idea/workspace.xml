@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9324e2a1-ccd3-4391-ab5a-245f1730ada2" name="Changes" comment="&lt;fix&gt; &lt;fix conflict&gt;" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Huỳnh Trí Thông &lt;52000719@student.tdtu.edu.vn&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/sprint-4_upload_lectures_backup" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLabMergeRequestFiltersHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPENED&quot;,
+    &quot;assignee&quot;: {
+      &quot;type&quot;: &quot;org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue&quot;,
+      &quot;username&quot;: &quot;24_JAVA_12_52000851&quot;,
+      &quot;fullname&quot;: &quot;Nguyen Gia Nguyen&quot;
+    }
+  }
+}</component>
+  <component name="GitLabMergeRequestsSettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;first&quot;: &quot;http://git.fa.edu.vn/hcm24_cpl_java_12/team-1/MockProject.git&quot;,
+    &quot;second&quot;: &quot;702b6449-a641-40d8-b49e-337a5f3aee5f&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2pSP07yozrCERJqnpkY3JKEY08b" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="openDirectoriesWithSingleClick" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.MockProjectApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/sprint-4__upload__lectures&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/TUTORIAL/NSTH-Real.Time.REST.APIs.Spring.Boot/16 - JWT - Securing REST API's with JWT Token using Spring Security 6 &amp; Spring Boot 3/springboot-blog-rest-api&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.gitlab.GitLabSettingsConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
+    ]
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="MockProjectApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <module name="MockProject" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.group1.MockProject.MockProjectApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9324e2a1-ccd3-4391-ab5a-245f1730ada2" name="Changes" comment="" />
+      <created>1732756277362</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1732756277362</updated>
+      <workItem from="1732756278476" duration="20738000" />
+      <workItem from="1732805578268" duration="622000" />
+      <workItem from="1732808577264" duration="2535000" />
+      <workItem from="1732865388692" duration="191000" />
+      <workItem from="1732942742727" duration="1385000" />
+      <workItem from="1732944150668" duration="4684000" />
+      <workItem from="1732962081576" duration="6969000" />
+      <workItem from="1732976041238" duration="37000" />
+      <workItem from="1732983200908" duration="26000" />
+      <workItem from="1733188554933" duration="21485000" />
+      <workItem from="1733360607027" duration="21783000" />
+      <workItem from="1733461648630" duration="399000" />
+      <workItem from="1733496425010" duration="408000" />
+      <workItem from="1733504594072" duration="9847000" />
+      <workItem from="1733514651812" duration="223000" />
+      <workItem from="1733793189257" duration="2919000" />
+      <workItem from="1733966301810" duration="1131000" />
+      <workItem from="1733970169901" duration="12381000" />
+      <workItem from="1733989084333" duration="54000" />
+      <workItem from="1733989146124" duration="196000" />
+      <workItem from="1733989487828" duration="105000" />
+      <workItem from="1733989759025" duration="6864000" />
+      <workItem from="1733996681235" duration="147000" />
+      <workItem from="1734398319922" duration="9942000" />
+      <workItem from="1734590871452" duration="3357000" />
+      <workItem from="1734710868701" duration="23000" />
+      <workItem from="1735003225815" duration="6008000" />
+      <workItem from="1735021072113" duration="1959000" />
+      <workItem from="1735023054251" duration="10563000" />
+      <workItem from="1735143968188" duration="820000" />
+      <workItem from="1735228671570" duration="4969000" />
+      <workItem from="1735408066794" duration="1578000" />
+      <workItem from="1735607952997" duration="1497000" />
+      <workItem from="1735609472118" duration="2554000" />
+      <workItem from="1735612056989" duration="18025000" />
+      <workItem from="1735737733801" duration="67000" />
+      <workItem from="1735780044256" duration="18282000" />
+      <workItem from="1735929193196" duration="596000" />
+      <workItem from="1736010094091" duration="880000" />
+      <workItem from="1736168251067" duration="102000" />
+      <workItem from="1736216531544" duration="20136000" />
+      <workItem from="1736317724693" duration="1616000" />
+      <workItem from="1736332751754" duration="1245000" />
+      <workItem from="1736334505420" duration="16076000" />
+      <workItem from="1736384754137" duration="10744000" />
+      <workItem from="1736660661057" duration="2515000" />
+      <workItem from="1736670431305" duration="281000" />
+      <workItem from="1739122393825" duration="89000" />
+      <workItem from="1740378197190" duration="1000" />
+    </task>
+    <task id="LOCAL-00001" summary="&lt;feat&gt; &lt;authentication - signup/signin&gt;">
+      <option name="closed" value="true" />
+      <created>1732766559587</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1732766559587</updated>
+    </task>
+    <task id="LOCAL-00002" summary="&lt;feat&gt; &lt;authentication - update - signup/signin&gt;">
+      <option name="closed" value="true" />
+      <created>1732865475583</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732865475583</updated>
+    </task>
+    <task id="LOCAL-00003" summary="&lt;feat&gt; &lt;authentication&gt;: &lt;add signup/signin with oauth2&gt;">
+      <option name="closed" value="true" />
+      <created>1732975509941</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1732975509941</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Update AuthServiceImpl.java">
+      <option name="closed" value="true" />
+      <created>1733192821920</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1733192821920</updated>
+    </task>
+    <task id="LOCAL-00005" summary="&lt;feat&gt; &lt;update profile&gt;">
+      <option name="closed" value="true" />
+      <created>1733214562182</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1733214562182</updated>
+    </task>
+    <task id="LOCAL-00006" summary="&lt;update&gt; &lt;update authorization&gt;">
+      <option name="closed" value="true" />
+      <created>1733372485076</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1733372485076</updated>
+    </task>
+    <task id="LOCAL-00007" summary="&lt;fix&gt; &lt;fix signup with oaut2&gt;">
+      <option name="closed" value="true" />
+      <created>1733389708056</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1733389708056</updated>
+    </task>
+    <task id="LOCAL-00008" summary="&lt;feat&gt; &lt;add feature view homepage for guest and student&gt;">
+      <option name="closed" value="true" />
+      <created>1733514548131</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1733514548131</updated>
+    </task>
+    <task id="LOCAL-00009" summary="&lt;fix&gt; &lt;resolve confict&gt;">
+      <option name="closed" value="true" />
+      <created>1733798768335</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1733798768335</updated>
+    </task>
+    <task id="LOCAL-00010" summary="&lt;fix&gt; &lt;resolve confict&gt;">
+      <option name="closed" value="true" />
+      <created>1733799324166</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733799324166</updated>
+    </task>
+    <task id="LOCAL-00011" summary="&lt;fix&gt; &lt;fix signup and add validate for sinup request&gt;">
+      <option name="closed" value="true" />
+      <created>1733985534153</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1733985534153</updated>
+    </task>
+    <task id="LOCAL-00012" summary="&lt;feat&gt; &lt;add view homepage for instructor and get all courses&gt;">
+      <option name="closed" value="true" />
+      <created>1733996272621</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1733996272621</updated>
+    </task>
+    <task id="LOCAL-00013" summary="&lt;feat&gt; &lt;view list of students/instructor and block/unblock user, user cannot login if status is blocked&gt;">
+      <option name="closed" value="true" />
+      <created>1735144760728</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1735144760729</updated>
+    </task>
+    <task id="LOCAL-00014" summary="&lt;update&gt; &lt;add pagination and sorting with all properties of student/instructor&gt;">
+      <option name="closed" value="true" />
+      <created>1735233600151</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1735233600151</updated>
+    </task>
+    <task id="LOCAL-00015" summary="&lt;fix&gt; &lt;fix conflict&gt;">
+      <option name="closed" value="true" />
+      <created>1735409688259</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1735409688259</updated>
+    </task>
+    <task id="LOCAL-00016" summary="&lt;fix&gt; &lt;fix conflict&gt;">
+      <option name="closed" value="true" />
+      <created>1735618652686</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1735618652686</updated>
+    </task>
+    <task id="LOCAL-00017" summary="&lt;fix&gt; &lt;fix feature update profile&gt;">
+      <option name="closed" value="true" />
+      <created>1735788525359</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1735788525359</updated>
+    </task>
+    <task id="LOCAL-00018" summary="&lt;fix&gt; &lt;fix feature update profile&gt;">
+      <option name="closed" value="true" />
+      <created>1735790067993</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1735790067993</updated>
+    </task>
+    <task id="LOCAL-00019" summary="&lt;fix&gt; &lt;fix conflict&gt;">
+      <option name="closed" value="true" />
+      <created>1735790778929</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1735790778929</updated>
+    </task>
+    <task id="LOCAL-00020" summary="&lt;feat&gt; &lt;crud section, lecture and upload file in local&gt;">
+      <option name="closed" value="true" />
+      <created>1736239112374</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1736239112374</updated>
+    </task>
+    <task id="LOCAL-00021" summary="&lt;update&gt; &lt;check course status when create, update and delete section, lecture&gt;">
+      <option name="closed" value="true" />
+      <created>1736239480724</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1736239480724</updated>
+    </task>
+    <task id="LOCAL-00022" summary="&lt;update&gt; &lt;upload file from create lecture to cloudinary&gt;">
+      <option name="closed" value="true" />
+      <created>1736338005014</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1736338005014</updated>
+    </task>
+    <task id="LOCAL-00023" summary="&lt;update&gt; &lt;fix update profile, add check course belong to instructor&gt;">
+      <option name="closed" value="true" />
+      <created>1736355178620</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1736355178620</updated>
+    </task>
+    <task id="LOCAL-00024" summary="&lt;update&gt; &lt;add view section and lecture for student, check approved instructor&gt;">
+      <option name="closed" value="true" />
+      <created>1736386670846</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1736386670846</updated>
+    </task>
+    <task id="LOCAL-00025" summary="&lt;fix&gt; &lt;fix conflict&gt;">
+      <option name="closed" value="true" />
+      <created>1736389163310</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1736389163310</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/feature/sprint-4_upload_lectures" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge remote-tracking branch 'origin/feature/Authentication-4_Entities' into feature/Authentication_SignUp&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/com/group1/MockProject/entity/User.java" />
+    <MESSAGE value="&lt;feat&gt; &lt;authentication - signup/signin&gt;" />
+    <MESSAGE value="&lt;feat&gt; &lt;authentication - update - signup/signin&gt;" />
+    <MESSAGE value="&lt;feat&gt; &lt;authentication&gt;: &lt;add signup/signin with oauth2&gt;" />
+    <MESSAGE value="&lt;update&gt; &lt;test&gt;" />
+    <MESSAGE value="Update AuthServiceImpl.java" />
+    <MESSAGE value="&lt;feat&gt; &lt;update profile&gt;" />
+    <MESSAGE value="&lt;update&gt; &lt;update authorization&gt;" />
+    <MESSAGE value="&lt;fix&gt; &lt;fix signup with oaut2&gt;" />
+    <MESSAGE value="&lt;feat&gt; &lt;add feature view homepage for guest and student&gt;" />
+    <MESSAGE value="Merge branch 'feature/Authentication-UC22_24' into 'feature/Authentication-backup'&#10;&#10;&lt;feature&gt;&lt;fix bug confirmToken&gt;&#10;&#10;See merge request hcm24_cpl_java_12/team-1/MockProject!32" />
+    <MESSAGE value="&lt;fix&gt; &lt;resolve confict&gt;" />
+    <MESSAGE value="&lt;fix&gt; &lt;fix signup and add validate for sinup request&gt;" />
+    <MESSAGE value="Merge branch 'feature/sprint-4-Fix-deletecourse' into 'feature/sprint-4'&#10;&#10;fix bug : delete course&#10;&#10;See merge request hcm24_cpl_java_12/team-1/MockProject!42" />
+    <MESSAGE value="&lt;feat&gt; &lt;add view homepage for instructor and get all courses&gt;" />
+    <MESSAGE value="&lt;feat&gt; &lt;view list of students/instructor and block/unblock user, user cannot login if status is blocked&gt;" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/feature/sprint-4' into feature/sprint-4_UC_29-35&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/com/group1/MockProject/config/SecurityConfiguration.java&#10;#&#9;src/main/java/com/group1/MockProject/controller/AdminController.java&#10;#&#9;src/main/java/com/group1/MockProject/repository/UserRepository.java" />
+    <MESSAGE value="&lt;update&gt; &lt;add pagination and sorting with all properties of student/instructor&gt;" />
+    <MESSAGE value="&lt;fix&gt; &lt;fix feature update profile&gt;" />
+    <MESSAGE value="&lt;feat&gt; &lt;crud section, lecture and upload file in local&gt;" />
+    <MESSAGE value="&lt;update&gt; &lt;check course status when create, update and delete section, lecture&gt;" />
+    <MESSAGE value="&lt;update&gt; &lt;upload file from create lecture to cloudinary&gt;" />
+    <MESSAGE value="&lt;update&gt; &lt;fix update profile, add check course belong to instructor&gt;" />
+    <MESSAGE value="&lt;update&gt; &lt;add view section and lecture for student, check approved instructor&gt;" />
+    <MESSAGE value="&lt;fix&gt; &lt;fix conflict&gt;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&lt;fix&gt; &lt;fix conflict&gt;" />
+  </component>
+</project>

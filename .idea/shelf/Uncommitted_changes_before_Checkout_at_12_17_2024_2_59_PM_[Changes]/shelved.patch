@@ -1,0 +1,79 @@
+Index: src/main/java/com/group1/MockProject/controller/AuthenticationController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.group1.MockProject.controller;\r\n\r\nimport com.group1.MockProject.dto.ApiResponseDto;\r\nimport com.group1.MockProject.dto.request.ChangeForgotPasswordRequest;\r\nimport com.group1.MockProject.dto.request.ChangePasswordRequest;\r\nimport com.group1.MockProject.dto.request.ForgotPasswordRequest;\r\nimport com.group1.MockProject.dto.request.ResetPasswordRequest;\r\nimport com.group1.MockProject.dto.request.SignInRequest;\r\nimport com.group1.MockProject.dto.request.SignUpRequest;\r\nimport com.group1.MockProject.dto.request.SignUpRequestForInstructor;\r\nimport com.group1.MockProject.dto.response.*;\r\nimport com.group1.MockProject.service.AuthService;\r\nimport jakarta.validation.Valid;\r\n\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.security.core.Authentication;\r\nimport org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;\r\nimport org.springframework.security.oauth2.core.user.OAuth2User;\r\nimport org.springframework.validation.BindingResult;\r\nimport org.springframework.validation.annotation.Validated;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\n@RestController\r\n@RequestMapping(\"/api/v1/auth\")\r\npublic class AuthenticationController {\r\n\r\n    private AuthService authService;\r\n\r\n    public AuthenticationController(AuthService authService) {\r\n        this.authService = authService;\r\n    }\r\n\r\n    @PostMapping(\"/sign-in\")\r\n    public ResponseEntity<?> signIn(@RequestBody @Valid SignInRequest request) {\r\n        SignInResponse response = authService.authenticate(request);\r\n        return ResponseEntity.status(HttpStatus.OK)\r\n                .body(\r\n                        ApiResponseDto.<SignInResponse>builder()\r\n                                .status(HttpStatus.OK.value() + \"'\")\r\n                                .message(HttpStatus.OK.name())\r\n                                .response(response)\r\n                                .build());\r\n    }\r\n\r\n    @PostMapping(\"/sign-up\")\r\n    public ResponseEntity<ApiResponseDto<SignUpResponse>> signUp(\r\n            @RequestBody @Valid SignUpRequest request) {\r\n        SignUpResponse response = authService.signUp(request);\r\n        return ResponseEntity.ok()\r\n                .body(\r\n                        ApiResponseDto.<SignUpResponse>builder()\r\n                                .status(HttpStatus.OK.toString())\r\n                                .message(response.getMessage())\r\n                                .response(response)\r\n                                .build());\r\n    }\r\n\r\n    @GetMapping(\"sign-up/confirm\")\r\n    public ResponseEntity<ApiResponseDto<ConfirmTokenResponse>> confirmSignUp(@RequestHeader(\"Authorization\") String authorizationHeader) {\r\n        try{\r\n            String token = authorizationHeader.replace(\"Bearer \", \"\");\r\n            ConfirmTokenResponse response = authService.confirmToken(token);\r\n            return ResponseEntity.status(HttpStatus.OK)\r\n                    .body(\r\n                            ApiResponseDto.<ConfirmTokenResponse>builder()\r\n                                    .status(HttpStatus.OK.toString())\r\n                                    .message(\"OK\")\r\n                                    .response(response)\r\n                                    .build()\r\n                    );\r\n        }catch (IllegalStateException e){\r\n          return ResponseEntity.status(400)\r\n              .body(\r\n                  ApiResponseDto.<ConfirmTokenResponse>builder()\r\n                      .status(\"400\")\r\n                      .message(\"BAD_REQUEST\")\r\n                      .response(new ConfirmTokenResponse(e.getMessage()))\r\n                      .build());\r\n          }\r\n    }\r\n\r\n    @PostMapping(\"/change-password\")\r\n    public ApiResponseDto changePassword(@Validated @RequestBody ChangePasswordRequest request) {\r\n        try {\r\n            // Gọi AuthService để xử lý\r\n            authService.changePassword(request.getEmail(), request.getOldPassword(), request.getNewPassword());\r\n            return new ApiResponseDto(\"SUCCESS\", \"Password changed successfully\", null);\r\n        } catch (IllegalArgumentException e) {\r\n            return new ApiResponseDto(\"FAILED\", e.getMessage(), null);\r\n        } catch (Exception e) {\r\n            return new ApiResponseDto(\"FAILED\", \"An unexpected error occurred\", null);\r\n        }\r\n    }\r\n\r\n    @GetMapping(\"/oauth2/success\")\r\n    public ResponseEntity<ApiResponseDto<SignInResponse>> loginOauth2Sucess(Authentication authentication, OAuth2AuthenticationToken authenticationToken) {\r\n        if (authenticationToken == null) {\r\n            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();\r\n        }\r\n\r\n        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();\r\n        String email = oAuth2User.getAttribute(\"email\");\r\n        String fullName = oAuth2User.getAttribute(\"name\");\r\n        String provider = authenticationToken.getAuthorizedClientRegistrationId();\r\n        boolean status = oAuth2User.getAttribute(\"email_verified\");\r\n\r\n        SignInResponse response = authService.signUpOAuth2(email, fullName, provider, status);\r\n\r\n        return ResponseEntity.status(HttpStatus.OK)\r\n                .body(\r\n                        ApiResponseDto.<SignInResponse>builder()\r\n                                .status(HttpStatus.OK.toString())\r\n                                .message(\"OAUTH2 SIGN IN SUCCESSFULLY\")\r\n                                .response(response)\r\n                                .build());\r\n    }\r\n\r\n\r\n    @PostMapping(\"/forgot-password\")\r\n    public ResponseEntity<ApiResponseDto<ForgotPasswordResponse>> forgotPassword(\r\n            @RequestBody @Valid ForgotPasswordRequest request,\r\n            BindingResult bindingResult) {\r\n        if (bindingResult.hasErrors()) {\r\n            return ResponseEntity.badRequest().body(\r\n                    ApiResponseDto.<ForgotPasswordResponse>builder()\r\n                            .status(\"400\")\r\n                            .message(\"BAD_REQUEST\")\r\n                            .response(new ForgotPasswordResponse(null, \"Vui lòng nhập đầy đủ thông tin\"))\r\n                            .build()\r\n            );\r\n        }\r\n        return authService.forgotPassword(request);\r\n\r\n    }\r\n\r\n    @PostMapping(\"/forgot-password/change\")\r\n    public ResponseEntity<ApiResponseDto<ResetPasswordResponse>> changePassword(\r\n            @RequestHeader(value = \"Authorization\", required = false) String authorizationHeader,\r\n            @Valid @RequestBody ChangeForgotPasswordRequest request,\r\n            BindingResult bindingResult) {\r\n        if(authorizationHeader==null){\r\n            return ResponseEntity.badRequest().body(\r\n                    ApiResponseDto.<ResetPasswordResponse>builder()\r\n                            .status(\"401\")\r\n                            .message(\"UNAUTHORIZED\")\r\n                            .response(new ResetPasswordResponse(\"Token không hợp lệ\"))\r\n                            .build()\r\n            );\r\n        }\r\n        String token = authorizationHeader.replace(\"Bearer \", \"\");\r\n        if (bindingResult.hasErrors()) {\r\n            return ResponseEntity.badRequest().body(\r\n                    ApiResponseDto.<ResetPasswordResponse>builder()\r\n                            .status(\"400\")\r\n                            .message(\"BAD_REQUEST\")\r\n                            .response(new ResetPasswordResponse(\"Vui lòng nhập đầy đủ thông tin\"))\r\n                            .build()\r\n            );\r\n        }\r\n\r\n\r\n        ResetPasswordRequest newRequest = new ResetPasswordRequest();\r\n        newRequest.setToken(token);\r\n        newRequest.setNewPassword(request.getNewPassword());\r\n        newRequest.setConfirmPassword(request.getConfirmPassword());\r\n\r\n        return authService.resetPassword(newRequest);\r\n\r\n    }\r\n\r\n    @PostMapping(\"/sign-up/instructor\")\r\n    public ResponseEntity<ApiResponseDto<SignUpResponse>> signUpForInstructor(\r\n            @RequestBody @Valid SignUpRequestForInstructor requestForInstructor) {\r\n        SignUpResponse response = authService.signUpForInstructor(requestForInstructor);\r\n        return ResponseEntity.ok()\r\n                .body(\r\n                        ApiResponseDto.<SignUpResponse>builder()\r\n                                .status(HttpStatus.OK.toString())\r\n                                .message(response.getMessage())\r\n                                .response(response)\r\n                                .build());\r\n    }\r\n\r\n    @PostMapping(\"/sign-in/instructor\")\r\n    public ResponseEntity<ApiResponseDto<SignInResponse>> signInForInstructor(@RequestBody SignInRequest request) {\r\n        //\r\n        SignInResponse response = authService.authenticate(request);\r\n        return ResponseEntity.status(HttpStatus.OK)\r\n                .body(\r\n                        ApiResponseDto.<SignInResponse>builder()\r\n                                .status(\"SUCCESS\")\r\n                                .message(\"TEST SPRING BOOT\")\r\n                                .response(response)\r\n                                .build());\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/group1/MockProject/controller/AuthenticationController.java b/src/main/java/com/group1/MockProject/controller/AuthenticationController.java
+--- a/src/main/java/com/group1/MockProject/controller/AuthenticationController.java	(revision 87e3689b8eb60b4e42ffec9fde46c80c84595c2e)
++++ b/src/main/java/com/group1/MockProject/controller/AuthenticationController.java	(date 1734422280104)
+@@ -170,15 +170,15 @@
+     }
+ 
+     @PostMapping("/sign-up/instructor")
+-    public ResponseEntity<ApiResponseDto<SignUpResponse>> signUpForInstructor(
++    public ResponseEntity<?> signUpForInstructor(
+             @RequestBody @Valid SignUpRequestForInstructor requestForInstructor) {
+         SignUpResponse response = authService.signUpForInstructor(requestForInstructor);
+         return ResponseEntity.ok()
+                 .body(
+-                        ApiResponseDto.<SignUpResponse>builder()
++                        ApiResponseDto.builder()
+                                 .status(HttpStatus.OK.toString())
+                                 .message(response.getMessage())
+-                                .response(response)
++                                .response(response.toString())
+                                 .build());
+     }
+ 
+Index: src/main/java/com/group1/MockProject/dto/response/SignUpResponse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.group1.MockProject.dto.response;\r\n\r\nimport lombok.AllArgsConstructor;\r\nimport lombok.Getter;\r\nimport lombok.NoArgsConstructor;\r\nimport lombok.Setter;\r\n\r\n@Getter\r\n@Setter\r\n@NoArgsConstructor\r\n@AllArgsConstructor\r\npublic class SignUpResponse {\r\n    private String token;\r\n    private String message;\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/group1/MockProject/dto/response/SignUpResponse.java b/src/main/java/com/group1/MockProject/dto/response/SignUpResponse.java
+--- a/src/main/java/com/group1/MockProject/dto/response/SignUpResponse.java	(revision 87e3689b8eb60b4e42ffec9fde46c80c84595c2e)
++++ b/src/main/java/com/group1/MockProject/dto/response/SignUpResponse.java	(date 1734422280077)
+@@ -1,14 +1,12 @@
+ package com.group1.MockProject.dto.response;
+ 
+-import lombok.AllArgsConstructor;
+-import lombok.Getter;
+-import lombok.NoArgsConstructor;
+-import lombok.Setter;
++import lombok.*;
+ 
+ @Getter
+ @Setter
+ @NoArgsConstructor
+ @AllArgsConstructor
++@ToString
+ public class SignUpResponse {
+     private String token;
+     private String message;
+Index: src/main/java/com/group1/MockProject/entity/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.group1.MockProject.entity;\r\n\r\nimport com.fasterxml.jackson.annotation.JsonManagedReference;\r\nimport jakarta.persistence.*;\r\nimport lombok.AllArgsConstructor;\r\nimport lombok.Getter;\r\nimport lombok.NoArgsConstructor;\r\nimport lombok.Setter;\r\n\r\nimport jakarta.persistence.*;\r\nimport lombok.*;\r\n\r\nimport java.time.LocalDateTime;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n@Getter\r\n@Setter\r\n@NoArgsConstructor\r\n@AllArgsConstructor\r\n@ToString\r\n@Entity\r\n@Table(name = \"users\")\r\npublic class User {\r\n\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    private int id;\r\n\r\n    @Column(name = \"email\", nullable = false, unique = true)\r\n    private String email;\r\n\r\n    @Column(name = \"password\")\r\n    private String password;\r\n\r\n    @Column(name = \"full_name\")\r\n    private String fullName;\r\n\r\n    @Column(name = \"address\")\r\n    private String address;\r\n\r\n    @Column(name = \"phone\")\r\n    private String phone;\r\n\r\n    @Column(name = \"provider\")\r\n    private String provider;\r\n\r\n    @Column(name = \"created_at\")\r\n    private LocalDateTime createdAt;\r\n\r\n    @Column(name = \"updated_at\")\r\n    private LocalDateTime updatedAt;\r\n\r\n    @Column(name = \"verification_code\")\r\n    private String verificationCode;\r\n\r\n    // Status -1: BLOCKED, 0: PENDING, 1: ACTIVE\r\n    @Column(name = \"status\")\r\n    private int status;\r\n\r\n    @Enumerated(EnumType.STRING)\r\n    private UserRole role;\r\n\r\n    @JsonManagedReference\r\n    @OneToOne(mappedBy = \"user\", cascade = CascadeType.ALL, orphanRemoval = true)\r\n    private Student student;\r\n    @JsonManagedReference\r\n    @OneToOne(mappedBy = \"user\", cascade = CascadeType.ALL, orphanRemoval = true)\r\n    private Instructor instructor;\r\n\r\n    // Automatically update createdAt and updatedAt when inserting and updating\r\n    @PrePersist\r\n    protected void onCreate() {\r\n        this.createdAt = LocalDateTime.now();\r\n        this.updatedAt = LocalDateTime.now();\r\n    }\r\n\r\n    @PreUpdate\r\n    protected void onUpdate() {\r\n        this.updatedAt = LocalDateTime.now();\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/group1/MockProject/entity/User.java b/src/main/java/com/group1/MockProject/entity/User.java
+--- a/src/main/java/com/group1/MockProject/entity/User.java	(revision 87e3689b8eb60b4e42ffec9fde46c80c84595c2e)
++++ b/src/main/java/com/group1/MockProject/entity/User.java	(date 1734422280088)
+@@ -61,10 +61,10 @@
+     @Enumerated(EnumType.STRING)
+     private UserRole role;
+ 
+-    @JsonManagedReference
++//    @JsonManagedReference
+     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+     private Student student;
+-    @JsonManagedReference
++//    @JsonManagedReference
+     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+     private Instructor instructor;
+ 

@@ -1,0 +1,152 @@
+Index: src/main/java/com/group1/MockProject/controller/HomeController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.group1.MockProject.controller;\r\n\r\nimport com.group1.MockProject.dto.ApiResponseDto;\r\nimport com.group1.MockProject.dto.request.UpdateProfileRequest;\r\nimport com.group1.MockProject.dto.response.*;\r\nimport com.group1.MockProject.service.CourseService;\r\nimport com.group1.MockProject.service.HomePageService;\r\nimport com.group1.MockProject.service.UserService;\r\nimport com.group1.MockProject.utils.AppContants;\r\nimport jakarta.validation.Valid;\r\nimport jakarta.validation.constraints.Min;\r\nimport jakarta.validation.constraints.Pattern;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.security.access.prepost.PreAuthorize;\r\nimport org.springframework.security.authentication.AnonymousAuthenticationToken;\r\nimport org.springframework.security.core.Authentication;\r\nimport org.springframework.security.core.GrantedAuthority;\r\nimport org.springframework.security.core.context.SecurityContext;\r\nimport org.springframework.security.core.context.SecurityContextHolder;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.Collection;\r\n\r\n\r\n@RestController\r\n@RequestMapping(\"/api/v1\")\r\npublic class HomeController {\r\n\r\n\r\n    private UserService userService;\r\n    private HomePageService homePageService;\r\n\r\n    public HomeController(UserService userService,\r\n                          HomePageService homePageService) {\r\n        this.userService = userService;\r\n        this.homePageService = homePageService;\r\n    }\r\n\r\n\r\n    @GetMapping({\"/\",\"/index\",\"/home\",\"\",\"/homepage\",\"/home-page\"})\r\n    public ResponseEntity<?> index(Authentication authentication) {\r\n\r\n        if (authentication == null || authentication instanceof AnonymousAuthenticationToken || !authentication.isAuthenticated()) {\r\n            GuestHomePageDTO response = homePageService.getHomePageForGuest();\r\n            return ResponseEntity.ok().body(\r\n                ApiResponseDto.<GuestHomePageDTO>builder()\r\n                        .status(HttpStatus.OK.value() + \"\")\r\n                        .message(HttpStatus.OK.name())\r\n                        .response(response)\r\n                        .build());\r\n        }\r\n\r\n        if(authentication.isAuthenticated()){\r\n            String email = authentication.getName();\r\n            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();\r\n            if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals(\"ROLE_STUDENT\"))) {\r\n                StudentHomePageDTO response = homePageService.getHomePageForStudent(email);\r\n\r\n                // return homepage for student\r\n                return ResponseEntity.ok().body(\r\n                        ApiResponseDto.<StudentHomePageDTO>builder()\r\n                                .status(HttpStatus.OK.value() + \"\")\r\n                                .message(HttpStatus.OK.name())\r\n                                .response(response)\r\n                                .build());\r\n            } else if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals(\"ROLE_INSTRUCTOR\"))) {\r\n                // return homepage for instructor\r\n                InstructorHomePageDTO instructorHomePageDTO = homePageService.getHomePageForInstructor(email);\r\n\r\n                return ResponseEntity.ok().body(\r\n                        ApiResponseDto.builder()\r\n                                .status(HttpStatus.OK.value() + \"\")\r\n                                .message(HttpStatus.OK.name())\r\n                                .response(instructorHomePageDTO)\r\n                                .build());\r\n            }\r\n        }\r\n\r\n        // return access denied\r\n        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(\r\n                ApiResponseDto.<String>builder()\r\n                        .status(HttpStatus.UNAUTHORIZED.value() + \"\")\r\n                        .message(HttpStatus.UNAUTHORIZED.name())\r\n                        .response(\"Access Denied\")\r\n                        .build());\r\n    }\r\n\r\n    @PreAuthorize(\"hasAnyRole('STUDENT', 'INSTRUCTOR')\")\r\n    @GetMapping(\"/profile\")\r\n    public ResponseEntity<?> getProfile(@RequestHeader(\"Authorization\") String authorizationHeader) {\r\n        String token = authorizationHeader.replace(\"Bearer \", \"\");\r\n\r\n        UserInfoResponse response = userService.getUserInfoByToken(token);\r\n\r\n        return ResponseEntity.ok().body(\r\n                ApiResponseDto.<UserInfoResponse>builder()\r\n                        .status(HttpStatus.OK.value() + \"\")\r\n                        .message(HttpStatus.OK.name())\r\n                        .response(response)\r\n                        .build()\r\n        );\r\n    }\r\n\r\n    @GetMapping(\"/admin\")\r\n    public String admin() {\r\n\r\n        SecurityContext context = SecurityContextHolder.getContext();\r\n        Authentication authentication = context.getAuthentication();\r\n        return \"\" + authentication;\r\n    }\r\n\r\n    // POST /api/v1/profile - Enter email to receive email confirm update profile\r\n    @PostMapping(\"/profile\")\r\n    public ResponseEntity<?> requestProfileUpdate(@RequestBody @Valid UpdateProfileRequest request, @RequestHeader(\"Authorization\") String authorizationHeader) {\r\n        String token = authorizationHeader.replace(\"Bearer \", \"\");\r\n\r\n        UpdateProfileResponse response = userService.requestProfileUpdate(token, request);\r\n\r\n        return ResponseEntity.ok().body(\r\n                ApiResponseDto.<UpdateProfileResponse>builder()\r\n                        .status(HttpStatus.OK.value() + \"\")\r\n                        .message(HttpStatus.OK.name())\r\n                        .response(response)\r\n                        .build()\r\n        );\r\n    }\r\n\r\n    // GET /api/v1/profile/confirm-update\r\n    @GetMapping(\"/profile/confirm-update\")\r\n    public ResponseEntity<?> confirmUpdateProfile(@RequestParam(\"token\") String token) {\r\n\r\n        UserInfoResponse response = userService.updateUserInfo(token);\r\n\r\n        return ResponseEntity.ok().body(\r\n                ApiResponseDto.<UserInfoResponse>builder()\r\n                        .status(HttpStatus.ACCEPTED.value() + \"\")\r\n                        .message(HttpStatus.ACCEPTED.getReasonPhrase())\r\n                        .response(response)\r\n                        .build()\r\n        );\r\n    }\r\n\r\n    @GetMapping(\"/courses\")\r\n    public ResponseEntity<?> getAllCourses(\r\n            @RequestParam(value = \"pageNo\", defaultValue = AppContants.DEFAULT_PAGE_NUMBER,required = false) @Min(0) int pageNo,\r\n            @RequestParam(value = \"pageSize\", defaultValue = AppContants.DEFAULT_PAGE_SIZE, required = false) @Min(1) int pageSize,\r\n            @RequestParam(value = \"sortBy\", defaultValue = AppContants.DEFAULT_SORT_BY, required = false) @Pattern(regexp = \"^(id|title|price)$\", message = \"sortBy phải là 'title' hoặc 'date'\") String sortBy,\r\n            @RequestParam(value = \"sortDir\", defaultValue = AppContants.DEFAULT_SORT_DIR, required = false) @Pattern(regexp = \"^(asc|desc)$\", message = \"sortDir phải là 'asc' hoặc 'desc'\") String sortDir\r\n    ) {\r\n\r\n        CourseResponse response = homePageService.getAllCoursesForHomePage(pageNo, pageSize, sortBy, sortDir);\r\n        return ResponseEntity.ok().body(\r\n                ApiResponseDto.builder()\r\n                        .status(HttpStatus.OK.value() + \"\")\r\n                        .message(HttpStatus.OK.getReasonPhrase())\r\n                        .response(response)\r\n                        .build());\r\n    }\r\n\r\n\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/com/group1/MockProject/controller/HomeController.java b/src/main/java/com/group1/MockProject/controller/HomeController.java
+--- a/src/main/java/com/group1/MockProject/controller/HomeController.java	(revision 87e3689b8eb60b4e42ffec9fde46c80c84595c2e)
++++ b/src/main/java/com/group1/MockProject/controller/HomeController.java	(date 1733996827405)
+@@ -3,7 +3,6 @@
+ import com.group1.MockProject.dto.ApiResponseDto;
+ import com.group1.MockProject.dto.request.UpdateProfileRequest;
+ import com.group1.MockProject.dto.response.*;
+-import com.group1.MockProject.service.CourseService;
+ import com.group1.MockProject.service.HomePageService;
+ import com.group1.MockProject.service.UserService;
+ import com.group1.MockProject.utils.AppContants;
+@@ -28,62 +27,41 @@
+ public class HomeController {
+ 
+ 
+-    private UserService userService;
+-    private HomePageService homePageService;
++    private final UserService userService;
++    private final HomePageService homePageService;
+ 
+-    public HomeController(UserService userService,
+-                          HomePageService homePageService) {
++    public HomeController(UserService userService, HomePageService homePageService) {
+         this.userService = userService;
+         this.homePageService = homePageService;
+     }
+ 
+ 
+-    @GetMapping({"/","/index","/home","","/homepage","/home-page"})
++    @GetMapping({"/", "/index", "/home", "", "/homepage", "/home-page"})
+     public ResponseEntity<?> index(Authentication authentication) {
+ 
+         if (authentication == null || authentication instanceof AnonymousAuthenticationToken || !authentication.isAuthenticated()) {
+             GuestHomePageDTO response = homePageService.getHomePageForGuest();
+-            return ResponseEntity.ok().body(
+-                ApiResponseDto.<GuestHomePageDTO>builder()
+-                        .status(HttpStatus.OK.value() + "")
+-                        .message(HttpStatus.OK.name())
+-                        .response(response)
+-                        .build());
++            return ResponseEntity.ok().body(ApiResponseDto.<GuestHomePageDTO>builder().status(HttpStatus.OK.value() + "").message(HttpStatus.OK.name()).response(response).build());
+         }
+ 
+-        if(authentication.isAuthenticated()){
++        if (authentication.isAuthenticated()) {
+             String email = authentication.getName();
+             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+             if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_STUDENT"))) {
+                 StudentHomePageDTO response = homePageService.getHomePageForStudent(email);
+ 
+                 // return homepage for student
+-                return ResponseEntity.ok().body(
+-                        ApiResponseDto.<StudentHomePageDTO>builder()
+-                                .status(HttpStatus.OK.value() + "")
+-                                .message(HttpStatus.OK.name())
+-                                .response(response)
+-                                .build());
++                return ResponseEntity.ok().body(ApiResponseDto.<StudentHomePageDTO>builder().status(HttpStatus.OK.value() + "").message(HttpStatus.OK.name()).response(response).build());
+             } else if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_INSTRUCTOR"))) {
+                 // return homepage for instructor
+                 InstructorHomePageDTO instructorHomePageDTO = homePageService.getHomePageForInstructor(email);
+ 
+-                return ResponseEntity.ok().body(
+-                        ApiResponseDto.builder()
+-                                .status(HttpStatus.OK.value() + "")
+-                                .message(HttpStatus.OK.name())
+-                                .response(instructorHomePageDTO)
+-                                .build());
++                return ResponseEntity.ok().body(ApiResponseDto.builder().status(HttpStatus.OK.value() + "").message(HttpStatus.OK.name()).response(instructorHomePageDTO).build());
+             }
+         }
+ 
+         // return access denied
+-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+-                ApiResponseDto.<String>builder()
+-                        .status(HttpStatus.UNAUTHORIZED.value() + "")
+-                        .message(HttpStatus.UNAUTHORIZED.name())
+-                        .response("Access Denied")
+-                        .build());
++        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ApiResponseDto.<String>builder().status(HttpStatus.UNAUTHORIZED.value() + "").message(HttpStatus.UNAUTHORIZED.name()).response("Access Denied").build());
+     }
+ 
+     @PreAuthorize("hasAnyRole('STUDENT', 'INSTRUCTOR')")
+@@ -93,13 +71,7 @@
+ 
+         UserInfoResponse response = userService.getUserInfoByToken(token);
+ 
+-        return ResponseEntity.ok().body(
+-                ApiResponseDto.<UserInfoResponse>builder()
+-                        .status(HttpStatus.OK.value() + "")
+-                        .message(HttpStatus.OK.name())
+-                        .response(response)
+-                        .build()
+-        );
++        return ResponseEntity.ok().body(ApiResponseDto.<UserInfoResponse>builder().status(HttpStatus.OK.value() + "").message(HttpStatus.OK.name()).response(response).build());
+     }
+ 
+     @GetMapping("/admin")
+@@ -117,13 +89,7 @@
+ 
+         UpdateProfileResponse response = userService.requestProfileUpdate(token, request);
+ 
+-        return ResponseEntity.ok().body(
+-                ApiResponseDto.<UpdateProfileResponse>builder()
+-                        .status(HttpStatus.OK.value() + "")
+-                        .message(HttpStatus.OK.name())
+-                        .response(response)
+-                        .build()
+-        );
++        return ResponseEntity.ok().body(ApiResponseDto.<UpdateProfileResponse>builder().status(HttpStatus.OK.value() + "").message(HttpStatus.OK.name()).response(response).build());
+     }
+ 
+     // GET /api/v1/profile/confirm-update
+@@ -132,30 +98,14 @@
+ 
+         UserInfoResponse response = userService.updateUserInfo(token);
+ 
+-        return ResponseEntity.ok().body(
+-                ApiResponseDto.<UserInfoResponse>builder()
+-                        .status(HttpStatus.ACCEPTED.value() + "")
+-                        .message(HttpStatus.ACCEPTED.getReasonPhrase())
+-                        .response(response)
+-                        .build()
+-        );
++        return ResponseEntity.ok().body(ApiResponseDto.<UserInfoResponse>builder().status(HttpStatus.ACCEPTED.value() + "").message(HttpStatus.ACCEPTED.getReasonPhrase()).response(response).build());
+     }
+ 
+     @GetMapping("/courses")
+-    public ResponseEntity<?> getAllCourses(
+-            @RequestParam(value = "pageNo", defaultValue = AppContants.DEFAULT_PAGE_NUMBER,required = false) @Min(0) int pageNo,
+-            @RequestParam(value = "pageSize", defaultValue = AppContants.DEFAULT_PAGE_SIZE, required = false) @Min(1) int pageSize,
+-            @RequestParam(value = "sortBy", defaultValue = AppContants.DEFAULT_SORT_BY, required = false) @Pattern(regexp = "^(id|title|price)$", message = "sortBy phải là 'title' hoặc 'date'") String sortBy,
+-            @RequestParam(value = "sortDir", defaultValue = AppContants.DEFAULT_SORT_DIR, required = false) @Pattern(regexp = "^(asc|desc)$", message = "sortDir phải là 'asc' hoặc 'desc'") String sortDir
+-    ) {
++    public ResponseEntity<?> getAllCourses(@RequestParam(value = "pageNo", defaultValue = AppContants.DEFAULT_PAGE_NUMBER, required = false) @Min(0) int pageNo, @RequestParam(value = "pageSize", defaultValue = AppContants.DEFAULT_PAGE_SIZE, required = false) @Min(1) int pageSize, @RequestParam(value = "sortBy", defaultValue = AppContants.DEFAULT_SORT_BY, required = false) @Pattern(regexp = "^(id|title|price)$", message = "sortBy phải là 'title' hoặc 'date'") String sortBy, @RequestParam(value = "sortDir", defaultValue = AppContants.DEFAULT_SORT_DIR, required = false) @Pattern(regexp = "^(asc|desc)$", message = "sortDir phải là 'asc' hoặc 'desc'") String sortDir) {
+ 
+         CourseResponse response = homePageService.getAllCoursesForHomePage(pageNo, pageSize, sortBy, sortDir);
+-        return ResponseEntity.ok().body(
+-                ApiResponseDto.builder()
+-                        .status(HttpStatus.OK.value() + "")
+-                        .message(HttpStatus.OK.getReasonPhrase())
+-                        .response(response)
+-                        .build());
++        return ResponseEntity.ok().body(ApiResponseDto.builder().status(HttpStatus.OK.value() + "").message(HttpStatus.OK.getReasonPhrase()).response(response).build());
+     }
+ 
+ 
